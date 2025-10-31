@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace MonoGame_Topic_2___Assignment
 {
@@ -13,6 +15,10 @@ namespace MonoGame_Topic_2___Assignment
         KeyboardState keyboardState;
         MouseState mouseState, previousMouseState;
         Rectangle window, buttonRect;
+        List<Rectangle> coinRects = new List<Rectangle>();
+        List<Rectangle> boomRects = new List<Rectangle>();
+        List<float> fades = new List<float>();
+        Random generator = new Random();
 
         public Game1()
         {
@@ -54,6 +60,27 @@ namespace MonoGame_Topic_2___Assignment
             {
                 start = false;
             }
+            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
+            {
+                if (buttonRect.Contains(mouseState.Position))
+                {
+                    coinRects.Add(new Rectangle(generator.Next(window.Width - 50), generator.Next(window.Height - 50), 50, 50));
+                }
+                for (int i = 0; i < coinRects.Count; i++)
+                {
+                    if (coinRects[i].Contains(mouseState.Position))
+                    {
+                        boomRects.Add(coinRects[i]);
+                        fades.Add(1f);
+                        coinRects.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            for (int i = 0; i < fades.Count; i++)
+            {
+                fades[i] -= 0.05f;
+            }
             // TODO: Add your update logic here
             previousMouseState = mouseState;
             base.Update(gameTime);
@@ -72,6 +99,15 @@ namespace MonoGame_Topic_2___Assignment
             {
                 _spriteBatch.Draw(bgTexture, window, Color.White);
                 _spriteBatch.Draw(buttonTexture, buttonRect, Color.White);
+                for (int i = 0; i < coinRects.Count; i++)
+                {
+                    _spriteBatch.Draw(coinTexture, coinRects[i], Color.White);
+                }
+                for (int i = 0; i < boomRects.Count; i++)
+                {
+                    _spriteBatch.Draw(explosionTexture, boomRects[i], Color.White * fades[i]);
+                }
+
             }
             // TODO: Add your drawing code here
             _spriteBatch.End();
