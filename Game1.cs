@@ -19,6 +19,10 @@ namespace MonoGame_Topic_2___Assignment
         List<Rectangle> boomRects = new List<Rectangle>();
         List<float> fades = new List<float>();
         Random generator = new Random();
+        SpriteFont scoreFont;
+        int score = 0;
+        List<Vector2> coinSpeeds = new List<Vector2>();
+
 
         public Game1()
         {
@@ -47,6 +51,7 @@ namespace MonoGame_Topic_2___Assignment
             explosionTexture = Content.Load<Texture2D>("Images/8bitExplode");
             startScreenTexture = Content.Load<Texture2D>("Images/startScreen");
             buttonTexture = Content.Load<Texture2D>("Images/RedButton");
+            scoreFont = Content.Load<SpriteFont>("Fonts/ScoreFont");
             // TODO: use this.Content to load your game content here
         }
 
@@ -65,6 +70,7 @@ namespace MonoGame_Topic_2___Assignment
                 if (buttonRect.Contains(mouseState.Position))
                 {
                     coinRects.Add(new Rectangle(generator.Next(window.Width - 50), generator.Next(window.Height - 50), 50, 50));
+                    coinSpeeds.Add(new Vector2(generator.Next(0, 10), generator.Next(0, 10)));
                 }
                 for (int i = 0; i < coinRects.Count; i++)
                 {
@@ -73,7 +79,9 @@ namespace MonoGame_Topic_2___Assignment
                         boomRects.Add(coinRects[i]);
                         fades.Add(1f);
                         coinRects.RemoveAt(i);
+                        coinSpeeds.RemoveAt(i);
                         i--;
+                        score++;
                     }
                 }
             }
@@ -81,7 +89,31 @@ namespace MonoGame_Topic_2___Assignment
             {
                 fades[i] -= 0.05f;
             }
+            for (int i = 0; i < coinRects.Count; i++)
+            {
+                Rectangle temp;
+                temp = coinRects[i];
+                temp.X += (int)coinSpeeds[i].X;
+                temp.Y += (int)coinSpeeds[i].Y;
+                coinRects[i] = temp;
+                if (coinRects[i].Top <= window.Top || coinRects[i].Bottom >= window.Bottom)
+                {
+
+                    Vector2 tempSpeed;
+                    tempSpeed = coinSpeeds[i];
+                    tempSpeed.Y *= -1;
+                    coinSpeeds[i] = tempSpeed;
+                }
+                if (coinRects[i].Left <= window.Left || coinRects[i].Right >= window.Right)
+                {
+                    Vector2 tempSpeed;
+                    tempSpeed = coinSpeeds[i];
+                    tempSpeed.X *= -1;
+                    coinSpeeds[i] = tempSpeed;
+                }
+            }
             // TODO: Add your update logic here
+            
             previousMouseState = mouseState;
             base.Update(gameTime);
         }
@@ -98,6 +130,7 @@ namespace MonoGame_Topic_2___Assignment
             if (!start)
             {
                 _spriteBatch.Draw(bgTexture, window, Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(buttonTexture, buttonRect, Color.White);
                 for (int i = 0; i < coinRects.Count; i++)
                 {

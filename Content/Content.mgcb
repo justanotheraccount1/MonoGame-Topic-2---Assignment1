@@ -13,6 +13,16 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/ScoreFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ScoreFont.spritefont
+
+#begin Fonts/TNG_Title.ttf
+/copy:Fonts/TNG_Title.ttf
+
 #begin Images/8bitExplode.png
 /importer:TextureImporter
 /processor:TextureProcessor
