@@ -10,7 +10,7 @@ namespace MonoGame_Topic_2___Assignment
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D coinTexture, explosionTexture, bgTexture, startScreenTexture, buttonTexture;
+        Texture2D coinTexture, explosionTexture, bgTexture, startScreenTexture, buttonTexture, clickedHandTexture, handTexture;
         bool start = true;
         KeyboardState keyboardState;
         MouseState mouseState, previousMouseState;
@@ -24,11 +24,12 @@ namespace MonoGame_Topic_2___Assignment
         List<Vector2> coinSpeeds = new List<Vector2>();
 
 
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         protected override void Initialize()
@@ -52,6 +53,8 @@ namespace MonoGame_Topic_2___Assignment
             startScreenTexture = Content.Load<Texture2D>("Images/startScreen");
             buttonTexture = Content.Load<Texture2D>("Images/RedButton");
             scoreFont = Content.Load<SpriteFont>("Fonts/ScoreFont");
+            clickedHandTexture = Content.Load<Texture2D>("Images/clickerHand");
+            handTexture = Content.Load<Texture2D>("Images/grabberHand");
             // TODO: use this.Content to load your game content here
         }
 
@@ -122,6 +125,7 @@ namespace MonoGame_Topic_2___Assignment
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
+
             if (start)
             {
                 _spriteBatch.Draw(startScreenTexture, window, Color.White);
@@ -141,8 +145,19 @@ namespace MonoGame_Topic_2___Assignment
                     _spriteBatch.Draw(explosionTexture, boomRects[i], Color.White * fades[i]);
                 }
 
+
             }
-            // TODO: Add your drawing code here
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+
+                _spriteBatch.Draw(handTexture, new Rectangle(mouseState.X - 15, mouseState.Y - 15, 30, 30), Color.White);
+
+            }
+            else if (mouseState.LeftButton != ButtonState.Pressed)
+            {
+                _spriteBatch.Draw(clickedHandTexture, new Rectangle(mouseState.X - 15, mouseState.Y - 15, 30, 30), Color.White);
+            }
+                // TODO: Add your drawing code here
             _spriteBatch.End();
             base.Draw(gameTime);
         }

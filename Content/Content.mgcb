@@ -35,6 +35,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/8bitExplode.png
 
+#begin Images/clickerHand.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/clickerHand.png
+
 #begin Images/coin.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -58,6 +70,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Cyberspace.jpg
+
+#begin Images/grabberHand.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/grabberHand.png
 
 #begin Images/RedButton.png
 /importer:TextureImporter
