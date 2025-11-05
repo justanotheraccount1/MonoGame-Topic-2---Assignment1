@@ -10,8 +10,9 @@ namespace MonoGame_Topic_2___Assignment
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D coinTexture, explosionTexture, bgTexture, startScreenTexture, buttonTexture, clickedHandTexture, handTexture;
+        Texture2D endScreen, coinTexture, explosionTexture, bgTexture, startScreenTexture, buttonTexture, clickedHandTexture, handTexture;
         bool start = true;
+        bool end = false;
         KeyboardState keyboardState;
         MouseState mouseState, previousMouseState;
         Rectangle window, buttonRect;
@@ -22,7 +23,7 @@ namespace MonoGame_Topic_2___Assignment
         SpriteFont scoreFont;
         int score = 0;
         List<Vector2> coinSpeeds = new List<Vector2>();
-
+        float seconds, endTime;
 
 
         public Game1()
@@ -34,12 +35,15 @@ namespace MonoGame_Topic_2___Assignment
 
         protected override void Initialize()
         {
+
             // TODO: Add your initialization logic here
             window = new Rectangle(0, 0, 800, 500);
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.ApplyChanges();
             buttonRect = new Rectangle(350, 200, 100, 100);
+            seconds = 0f;
+            endTime = 10f;
 
             base.Initialize();
         }
@@ -55,6 +59,7 @@ namespace MonoGame_Topic_2___Assignment
             scoreFont = Content.Load<SpriteFont>("Fonts/ScoreFont");
             clickedHandTexture = Content.Load<Texture2D>("Images/clickerHand");
             handTexture = Content.Load<Texture2D>("Images/grabberHand");
+            endScreen = Content.Load<Texture2D>("Images/GAMEOVER.");
             // TODO: use this.Content to load your game content here
         }
 
@@ -74,6 +79,7 @@ namespace MonoGame_Topic_2___Assignment
                 {
                     coinRects.Add(new Rectangle(generator.Next(window.Width - 50), generator.Next(window.Height - 50), 50, 50));
                     coinSpeeds.Add(new Vector2(generator.Next(0, 10), generator.Next(0, 10)));
+                    endTime += 1f;
                 }
                 for (int i = 0; i < coinRects.Count; i++)
                 {
@@ -115,8 +121,14 @@ namespace MonoGame_Topic_2___Assignment
                     coinSpeeds[i] = tempSpeed;
                 }
             }
+            seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (seconds >= endTime)
+            {
+                end = true;
+            }
             // TODO: Add your update logic here
-            
+
             previousMouseState = mouseState;
             base.Update(gameTime);
         }
@@ -135,6 +147,7 @@ namespace MonoGame_Topic_2___Assignment
             {
                 _spriteBatch.Draw(bgTexture, window, Color.White);
                 _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(0, 0), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Time: {endTime - seconds}", new Vector2(0, 470), Color.White);
                 _spriteBatch.Draw(buttonTexture, buttonRect, Color.White);
                 for (int i = 0; i < coinRects.Count; i++)
                 {
@@ -156,6 +169,11 @@ namespace MonoGame_Topic_2___Assignment
             else if (mouseState.LeftButton != ButtonState.Pressed)
             {
                 _spriteBatch.Draw(clickedHandTexture, new Rectangle(mouseState.X - 15, mouseState.Y - 15, 30, 30), Color.White);
+            }
+            if (end)
+            {
+                _spriteBatch.Draw(endScreen, window, Color.White);
+
             }
                 // TODO: Add your drawing code here
             _spriteBatch.End();
