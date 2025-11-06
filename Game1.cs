@@ -147,7 +147,7 @@ namespace MonoGame_Topic_2___Assignment
             {
                 _spriteBatch.Draw(bgTexture, window, Color.White);
                 _spriteBatch.DrawString(scoreFont, $"Score: {score}", new Vector2(0, 0), Color.White);
-                _spriteBatch.DrawString(scoreFont, $"Time: {endTime - seconds}", new Vector2(0, 470), Color.White);
+                _spriteBatch.DrawString(scoreFont, $"Time: {Convert.ToInt32(endTime - seconds)}", new Vector2(0, 470), Color.White);
                 _spriteBatch.Draw(buttonTexture, buttonRect, Color.White);
                 for (int i = 0; i < coinRects.Count; i++)
                 {
